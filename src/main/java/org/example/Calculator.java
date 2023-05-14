@@ -50,7 +50,7 @@ public class Calculator {
      * Purpose: Lets the user enter information
      * and then this code checks if the conditions are met
      * and then does statistical tests
-     * @return void
+     * return void
      **/
     public void solver(Scanner in){
         System.out.println("Welcome to the stats HW solver!");
@@ -79,7 +79,7 @@ public class Calculator {
         }
         System.out.println("This problem is most likely a " + check);
 
-        /**
+        /*
          * We will now collect the necessary information
          */
         //  Scanner.nextInt method does not read the newline character in your input created by hitting "Enter,"
@@ -90,17 +90,11 @@ public class Calculator {
         in.nextLine();
         System.out.print("Is the population large (greater than 10 times the sample size)?");
         String s = in.nextLine();
-        boolean isLarge = false;
-        if (s.toLowerCase().contains("y")) {
-            isLarge = true;
-        }
+        boolean isLarge = s.toLowerCase().contains("y");
 
         System.out.print("Is the sample randomized?");
         String r = in.nextLine();
-        boolean isRandom = false;
-        if (s.toLowerCase().contains("y")) {
-            isRandom = true;
-        }
+        boolean isRandom = r.toLowerCase().contains("y");
 
         // GOF TEST
         if (isGoodnessOfFit) { // if it is a GOF
@@ -122,7 +116,7 @@ public class Calculator {
      * ten percent condition and random variables.
      * This code will check if the test can be applied for
      * homogeneity or independence
-     * @return void
+     * return void
      **/
     public void twoVarStats(boolean tenPercentCondition, boolean random, Scanner in) {
         if (!tenPercentCondition || !random) {
@@ -155,7 +149,7 @@ public class Calculator {
             // a sum col and row method will be needed
             // total sum will be needed
 
-            System.out.println("The chisquare value is: " + chiSquare);
+            System.out.println("The chi-square value is: " + chiSquare);
             System.out.println("The calculated P-value is: " + pVal);
             System.out.println(summary());  // solution achieved
         }
@@ -195,18 +189,24 @@ public class Calculator {
                 System.out.println("Each value in the expected value is greater than or equal to 5");
                 System.out.println("This means that the expected counts passed");
                 System.out.println("The 1D array below is the expected counts: ");
+                displayExpectedCounts1D();
 
+                chiSquare = TestUtils.chiSquare(expectedValueMatrix1D, userMatrix1D);
+                pVal = TestUtils.chiSquareTest(expectedValueMatrix1D, userMatrix1D);
 
+                System.out.println("The chi-square value is: " + chiSquare);
+                System.out.println("The degrees of freedom is: " + calculateDF(entries));
+                System.out.println("The calculated P-value is: "+ pVal);
+                System.out.println(summary());  // solution achieved
             }
-
-            chiSquare = TestUtils.chiSquare(expectedValueMatrix1D, userMatrix1D);
-            pVal = TestUtils.chiSquareTest(expectedValueMatrix1D, userMatrix1D);
-
-            System.out.println("The chisquare value is: " + chiSquare);
-            System.out.println("The calculated P-value is: "+ pVal);
-            System.out.println(summary());  // solution achieved
+            else {
+                System.out.println("The expected counts condition was not met.");
+                System.out.println("The GOF test cannot be applied.");
+            }
         }
     }
+
+
 
     /**
      * Method Name: setExpectedValueMatrix1D
@@ -215,7 +215,7 @@ public class Calculator {
      * greater than or equal to 5, then return true.
      * Else, the conditions have not been met and
      * return false
-     * @return boolean
+     * return boolean
      **/
     public void setExpectedValueMatrix1D(int entries) {
         for (int i = 0; i < entries; i++) {
@@ -225,17 +225,13 @@ public class Calculator {
 
     public boolean verifyExpectedCounts1D(int entries) {
         for (int i = 0; i < entries; i++) {
-            if (expectedValueMatrix1D[i] < 5) {
-                return false;
-            }
+            if (expectedValueMatrix1D[i] < 5) return false;
         }
         return true;
     }
 
     public void displayExpectedCounts1D() {
-        for (int i = 0; i < expectedValueMatrix1D.length; i++) {
-            System.out.print(expectedValueMatrix1D[i] + " ");
-        }
+        for (double v : expectedValueMatrix1D) System.out.print(v + " ");
         System.out.println();
     }
 
@@ -290,10 +286,18 @@ public class Calculator {
      * Method Name: sorryMessage()
      * Purpose: Outputs sorry when the conditions for
      * the test have not been met
-     * @return void
+     * return void
      **/
     public void sorryMessage() {
         System.out.println("I'm sorry, the conditions for this test are not met");
+    }
+
+    public double calculateDF(int categories) {
+        return categories - 1;
+    }
+
+    public double calculateDF(int rows, int cols) {
+        return (rows - 1) * (cols - 1);
     }
 
     /**
@@ -326,15 +330,5 @@ public class Calculator {
         return str;
     }
 
-
-
-
-    public double chiSquareVal() {
-        return chiSquare;
-    }
-
-    public double getpVal() {
-        return pVal;
-    }
 
 }
