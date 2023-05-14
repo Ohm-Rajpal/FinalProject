@@ -7,7 +7,7 @@ public class FinalProject {
         Scanner input = new Scanner(System.in);
         Calculator myCalc = new Calculator();
 
-        myCalc.figureOutOnOwn(input);
+        myCalc.solver(input);
 
         //System.out.println("Hello world!");
 

@@ -6,17 +6,25 @@ import org.apache.commons.math3.stat.inference.TestUtils;
 public class Calculator {
 
 
-
-    private String message; // Input message by the user to determine which chi square to use
+    /**
+     * Identifying which test to use
+     */
     private boolean isGoodnessOfFit;
     private boolean isHomogeneity;
     private boolean isIndependence;
-    private double level; // significance level
 
+    /**
+     * Information needed to calculate statistics
+     */
+    private double level; // significance level
     private double n; // sample size
-    private double chiSquare; // the chi-square statistic
+    private int df; // degrees of freedom
+    private double chiSquare; // the chi-square test statistic
     private double pVal; // p-value of the chi-square
 
+    /**
+     * These are the array variables
+     */
     private long[][] userMatrix2D; // this will be the 2D array of the user input
     private double[][] expectedValueMatrix2D; // this will be the expected values matrix
     private long[] userMatrix1D; // this will be the 1D array of the user input
@@ -26,84 +34,26 @@ public class Calculator {
 
 
     public Calculator(){
-        message = "NOTHING";
         isGoodnessOfFit = false;
         isHomogeneity = false;
         isIndependence = false;
         level = 0.05;
         n = 0;
+        df = 0;
         chiSquare = 0.0;
-    }
-
-    public Calculator(String message, double level) {
-        this.message = message;
-        isGoodnessOfFit = false;
-        isHomogeneity = false;
-        isIndependence = false;
-        this.level = level;
-        n = 0;
-        chiSquare = 0.0;
+        pVal = 0.0;
     }
 
 
-    /*
-     * Name: processQuestion
-     * Purpose: If the user enters a string, this method will figure out if
-     * the problem is a chi square GOF, homogeneity, or independence
+    /**
+     * Method Name: solver
+     * Purpose: Lets the user enter information
+     * and then this code checks if the conditions are met
+     * and then does statistical tests
      * @return void
-     */
-
-    // THIS MIGHT BE TOO HARD TO IMPLEMENT
-    public void processQuestion(String msg, Scanner in) {
-        // if the user did not enter a message
-        if (msg.equals("NOTHING")) {
-            figureOutOnOwn(in);
-        }
-        else { // This means that there is a message
-        // this part here can be converted into a method
-            // USE REGEX TO SPLIT THE MSG AND THEN TRY TO AUTOFILL VALUES
-
-            // This is if there is an association
-            System.out.println("Is your input a 1D array or 2D array? (1D/2D)");
-            String choiceInput = in.nextLine();
-
-            /*
-             * If the input contains a 2D array, then it will execute these specific steps
-             */
-
-            if (choiceInput.contains("2") || choiceInput.toLowerCase().contains("two")) {
-                if (msg.toLowerCase().contains("association") || msg.toLowerCase().contains("dependent") ||
-                        msg.toLowerCase().contains("relationship"))
-                {
-
-                    isIndependence = true;
-                }
-
-                else if (msg.toLowerCase().contains("homogeneity") ||
-                            msg.toLowerCase().contains("distribution") ||
-                            msg.toLowerCase().contains("categorical"))
-                {
-                    isHomogeneity = true;
-                }
-
-                System.out.println("");
-           }
-           else { // There is only one variable and it's GOF test
-
-            }
-        }
-
-    }
-
-
-    /*
-     * Name: figureOutOnOwn
-     * Purpose: If the user was too lazy to copy and paste the word problem,
-     * this code will help the user find out which test or interval to use
-     * @return void
-     */
-    public void figureOutOnOwn(Scanner in){
-        System.out.println("Looks like we need to get more information");
+     **/
+    public void solver(Scanner in){
+        System.out.println("Welcome to the stats HW solver!");
         System.out.println("Does the problem have a 2 dimensional array or no: ");
         String check = in.nextLine();
         if (check.toLowerCase().contains("y")) {
@@ -113,8 +63,8 @@ public class Calculator {
         }
 
         if (check.equals("yes")) {
-            System.out.println("Your problem seems to be either a test for homogeneity or independence");
-            System.out.println("Does your problem have any of the following words? Association, dependence, relationship, etc?");
+            System.out.print("Your problem seems to be either a test for homogeneity or independence");
+            System.out.print("Does your problem have any of the following words? Association, dependence, relationship, etc?");
             check = in.nextLine();
             if (check.toLowerCase().contains("y")) {
                 check = "independence";
@@ -158,23 +108,27 @@ public class Calculator {
         } // PROGRAM ENDS HERE
         else if (isHomogeneity) {
             System.out.println("The test for homogeneity can be applied. Now this calculator requires more info");
-            twoVarStats(isLarge, isRandom, in);
         }
         else {
             System.out.println("The test for independence can be applied. Now this calculator requires more info");
-            twoVarStats(isLarge, isRandom, in);
         }
-
+        twoVarStats(isLarge, isRandom, in);
     }
 
+
+    /**
+     * Method Name: twoVarStats
+     * Purpose: Lets the user enter boolean values for the
+     * ten percent condition and random variables.
+     * This code will check if the test can be applied for
+     * homogeneity or independence
+     * @return void
+     **/
     public void twoVarStats(boolean tenPercentCondition, boolean random, Scanner in) {
         if (!tenPercentCondition || !random) {
             sorryMessage();
         } else { // this means the ten percent condition is met
 
-            /**
-             * Now comes the difficult part. I will have to take the input of a 2D array
-             */
             System.out.print("How many rows in your summary table?: ");
             int row = in.nextInt();
             in.nextLine();
@@ -207,6 +161,7 @@ public class Calculator {
         }
     }
 
+
     public void GOFTest(boolean tenPercentCondition, boolean random, Scanner in) {
 
         if (!tenPercentCondition || !random) {
@@ -234,9 +189,14 @@ public class Calculator {
 
             in.nextLine();
 
-            // MODIFYING OUTPUT PART IN THE RUBRIC. THIS EARNS THE POINT
-            for (int i = 0; i < entries; i++) {
-                expectedValueMatrix1D[i] = dist[i] * n;
+            setExpectedValueMatrix1D(entries);
+
+            if (verifyExpectedCounts1D(entries)) {
+                System.out.println("Each value in the expected value is greater than or equal to 5");
+                System.out.println("This means that the expected counts passed");
+                System.out.println("The 1D array below is the expected counts: ");
+
+
             }
 
             chiSquare = TestUtils.chiSquare(expectedValueMatrix1D, userMatrix1D);
@@ -248,12 +208,99 @@ public class Calculator {
         }
     }
 
+    /**
+     * Method Name: setExpectedValueMatrix1D
+     * Purpose: Sets the expected value matrix
+     * for the 1D array. If all the values are
+     * greater than or equal to 5, then return true.
+     * Else, the conditions have not been met and
+     * return false
+     * @return boolean
+     **/
+    public void setExpectedValueMatrix1D(int entries) {
+        for (int i = 0; i < entries; i++) {
+            expectedValueMatrix1D[i] = dist[i] * n;
+        }
+    }
+
+    public boolean verifyExpectedCounts1D(int entries) {
+        for (int i = 0; i < entries; i++) {
+            if (expectedValueMatrix1D[i] < 5) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void displayExpectedCounts1D() {
+        for (int i = 0; i < expectedValueMatrix1D.length; i++) {
+            System.out.print(expectedValueMatrix1D[i] + " ");
+        }
+        System.out.println();
+    }
+
+    /**
+     * Method Name: setExpectedValueMatrix2D
+     * Purpose: Sets the expected value matrix
+     * for the 2D array. If all the values are
+     * greater than or equal to 5, then return true.
+     * Else, the conditions have not been met and
+     * return false
+     * @return boolean
+     **/
+    public boolean setExpectedValueMatrix2D() {
+        return false;
+    }
 
 
+    /*
+    public static double[][] getExpectedValues(double[][] observed_values) {
+        int num_rows = observed_values.length;
+        int num_cols = observed_values[0].length;
+        double[][] expected_values = new double[num_rows][num_cols];
+        double row_total, col_total, grand_total;
+
+
+        grand_total = 0.0;
+        for (int i = 0; i < num_rows; i++) {
+            for (int j = 0; j < num_cols; j++) {
+                grand_total += observed_values[i][j];
+            }
+        }
+
+        for (int i = 0; i < num_rows; i++) {
+            row_total = 0.0;
+            for (int j = 0; j < num_cols; j++) {
+                row_total += observed_values[i][j];
+            }
+            for (int j = 0; j < num_cols; j++) {
+                col_total = 0.0;
+                for (int k = 0; k < num_rows; k++) {
+                    col_total += observed_values[k][j];
+                }
+                expected_values[i][j] = (row_total * col_total) / grand_total;
+            }
+        }
+
+        return expected_values;
+    }
+    */
+
+    /**
+     * Method Name: sorryMessage()
+     * Purpose: Outputs sorry when the conditions for
+     * the test have not been met
+     * @return void
+     **/
     public void sorryMessage() {
         System.out.println("I'm sorry, the conditions for this test are not met");
     }
 
+    /**
+     * Method Name: summary()
+     * Purpose: Gives a brief summary of
+     * @return String
+     **/
     public String summary() {
 
         String str = "";
@@ -278,6 +325,9 @@ public class Calculator {
         }
         return str;
     }
+
+
+
 
     public double chiSquareVal() {
         return chiSquare;
