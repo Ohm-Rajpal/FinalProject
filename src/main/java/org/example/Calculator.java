@@ -238,16 +238,53 @@ public class Calculator {
     /**
      * Method Name: setExpectedValueMatrix2D
      * Purpose: Sets the expected value matrix
-     * for the 2D array. If all the values are
-     * greater than or equal to 5, then return true.
-     * Else, the conditions have not been met and
-     * return false
-     * @return boolean
+     * for the 2D array
      **/
-    public boolean setExpectedValueMatrix2D() {
-        return false;
+    public void setExpectedValueMatrix2D() {
+        for (int r = 0; r < expectedValueMatrix2D.length; r++) {
+            for (int c = 0; c < expectedValueMatrix2D[0].length; c++) {
+                calcIndivVal(r, c, calcRow(r), calcCol(c));
+            }
+        }
     }
 
+    /**
+     * Helper method for setExpectedValueMatrix2D
+     * @return sum of row
+     */
+    public double calcRow(int row) {
+        double sum = 0.0;
+
+        // Row major traversal
+        for (int i = 0; i < expectedValueMatrix2D.length; i++) {
+            sum += expectedValueMatrix2D[row][i];
+        }
+        return sum;
+    }
+
+    /**
+     * Helper method for setExpectedValueMatrix2D
+     * @return sum of col
+     */
+    public double calcCol(int col) {
+        double sum = 0.0;
+
+        // Column major traversal
+        for (int i = 0; i < expectedValueMatrix2D[0].length; i++) {
+            sum += expectedValueMatrix2D[i][col];
+        }
+        return sum;
+    }
+
+    /**
+     * Helper method for setExpectedValueMatrix2D
+     * Sets the expected value given the row index and col index.
+     * Then takes the row sum and col sum and divides it by the total
+     * to get the expected count value.
+     */
+    public void calcIndivVal(int row, int col, double rowSum, double colSum) {
+        expectedValueMatrix2D[row][col] = ((rowSum) * (colSum))/n;
+    }
 
     /*
     public static double[][] getExpectedValues(double[][] observed_values) {

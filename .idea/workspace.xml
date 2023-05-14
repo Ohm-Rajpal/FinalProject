@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0be2118-6ede-46c2-98fa-a1fdf28abf06" name="Changes" comment="Updating some mistakes the Calculator.java class. Much more fixes are needed and I still need to fix the expected counts for the 1D and 2D arrays.">
+    <list default="true" id="b0be2118-6ede-46c2-98fa-a1fdf28abf06" name="Changes" comment="Fixed the code for the 1D array expected values.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Calculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Calculator.java" afterDir="false" />
     </list>
@@ -92,7 +92,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684086969587</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Fixed the code for the 1D array expected values.">
+      <created>1684088485978</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1684088485978</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -109,6 +116,7 @@
     <MESSAGE value="Deleted the file nabius G added" />
     <MESSAGE value="Finished the code for Calculator.java" />
     <MESSAGE value="Updating some mistakes the Calculator.java class. Much more fixes are needed and I still need to fix the expected counts for the 1D and 2D arrays." />
-    <option name="LAST_COMMIT_MESSAGE" value="Updating some mistakes the Calculator.java class. Much more fixes are needed and I still need to fix the expected counts for the 1D and 2D arrays." />
+    <MESSAGE value="Fixed the code for the 1D array expected values." />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed the code for the 1D array expected values." />
   </component>
 </project>
