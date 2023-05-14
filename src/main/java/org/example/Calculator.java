@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.Scanner;
 import org.apache.commons.math3.stat.inference.TestUtils;
-import org.apache.commons.math3.stat.inference.ChiSquareTest;
+
 public class Calculator {
 
 
@@ -17,7 +17,7 @@ public class Calculator {
     private double chiSquare; // the chi-square statistic
     private double pVal; // p-value of the chi-square
 
-    private int[][] userMatrix2D; // this will be the 2D array of the user input
+    private long[][] userMatrix2D; // this will be the 2D array of the user input
     private double[][] expectedValueMatrix2D; // this will be the expected values matrix
     private long[] userMatrix1D; // this will be the 1D array of the user input
     private double[] expectedValueMatrix1D; // this will be the expected value
@@ -157,12 +157,17 @@ public class Calculator {
             GOFTest(isLarge, isRandom, in);
         } // PROGRAM ENDS HERE
         else if (isHomogeneity) {
-            homogeneityTest(isLarge, isRandom, in);
+            System.out.println("The test for homogeneity can be applied. Now this calculator requires more info");
+            twoVarStats(isLarge, isRandom, in);
+        }
+        else {
+            System.out.println("The test for independence can be applied. Now this calculator requires more info");
+            twoVarStats(isLarge, isRandom, in);
         }
 
     }
 
-    public void homogeneityTest(boolean tenPercentCondition, boolean random, Scanner in) {
+    public void twoVarStats(boolean tenPercentCondition, boolean random, Scanner in) {
         if (!tenPercentCondition || !random) {
             sorryMessage();
         } else { // this means the ten percent condition is met
@@ -170,10 +175,38 @@ public class Calculator {
             /**
              * Now comes the difficult part. I will have to take the input of a 2D array
              */
+            System.out.print("How many rows in your summary table?: ");
+            int row = in.nextInt();
+            in.nextLine();
+            System.out.print("How many columns in your summary table?: ");
+            int col = in.nextInt();
+
+            userMatrix2D = new long[row][col];
+            expectedValueMatrix2D = new double[row][col];
 
 
+            // this gets all the values for the 2D array
+            for (int r = 0; r < row; r++) {
+                System.out.print("Enter all the values in row " + (r + 1) + ": ");
+                for (int c = 0; c < col; c++) {
+                    userMatrix2D[r][c] = in.nextInt();
+                }
+                in.nextLine();
+            }
+            // expected counts not even needed
+            chiSquare = TestUtils.chiSquare(userMatrix2D);
+            pVal = TestUtils.chiSquareTest(userMatrix2D);
+
+            // calculate expected values method
+            // a sum col and row method will be needed
+            // total sum will be needed
+
+            System.out.println("The chisquare value is: " + chiSquare);
+            System.out.println("The calculated P-value is: " + pVal);
+            System.out.println(summary());  // solution achieved
         }
     }
+
     public void GOFTest(boolean tenPercentCondition, boolean random, Scanner in) {
 
         if (!tenPercentCondition || !random) {
