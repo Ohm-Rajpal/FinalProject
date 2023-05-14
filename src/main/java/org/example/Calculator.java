@@ -23,7 +23,6 @@ public class Calculator {
     private double[] expectedValueMatrix1D; // this will be the expected value
     private double[] dist; // distribution of categorical variables for GOF
 
-    private Prompter prompter = new Prompter(new Scanner(System.in), System.out);
 
 
     public Calculator(){
