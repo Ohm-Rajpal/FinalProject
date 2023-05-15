@@ -133,14 +133,12 @@ public class Calculator {
             userMatrix2D = new long[row][col];
             expectedValueMatrix2D = new double[row][col];
 
-
             // this gets all the values for the 2D array
             for (int r = 0; r < row; r++) {
                 System.out.print("Enter all the values in row " + (r + 1) + ": ");
                 for (int c = 0; c < col; c++) {
                     userMatrix2D[r][c] = in.nextInt();
                 }
-                in.nextLine();
             }
 
             System.out.println("THERE IS A MISTAKE IMMEDIATELY AFTER THE 2D INPUT");
@@ -294,10 +292,10 @@ public class Calculator {
      */
     public double calcRow(int row) {
         double sum = 0.0;
-
+        // borked code - you had it as userMatrix2D.length before (wrong)
         // Row major traversal
-        for (int i = 0; i < expectedValueMatrix2D.length; i++) {
-            sum += userMatrix2D[row][i];
+         for (int i = 0; i < userMatrix2D[0].length; i++) {
+             sum += userMatrix2D[row][i];
         }
         return sum;
     }
@@ -308,9 +306,9 @@ public class Calculator {
      */
     public double calcCol(int col) {
         double sum = 0.0;
-
         // Column major traversal
-        for (int i = 0; i < expectedValueMatrix2D[0].length; i++) {
+        // borked code - you had it as userMatrix2D[0].length before (wrong)
+        for (int i = 0; i < userMatrix2D.length; i++) {
             sum += userMatrix2D[i][col];
         }
         return sum;
