@@ -8,8 +8,5 @@ public class FinalProject {
         Calculator myCalc = new Calculator();
 
         myCalc.solver(input);
-
-        //System.out.println("Hello world!");
-
     }
 }

@@ -16,9 +16,8 @@ public class Calculator {
     /**
      * Information needed to calculate statistics
      */
-    private double level; // significance level
+    private final double level; // significance level
     private double n; // sample size
-    private int df; // degrees of freedom
     private double chiSquare; // the chi-square test statistic
     private double pVal; // p-value of the chi-square
 
@@ -27,11 +26,10 @@ public class Calculator {
      */
     private long[][] userMatrix2D; // this will be the 2D array of the user input
     private double[][] expectedValueMatrix2D; // this will be the expected values matrix
+
     private long[] userMatrix1D; // this will be the 1D array of the user input
     private double[] expectedValueMatrix1D; // this will be the expected value
     private double[] dist; // distribution of categorical variables for GOF
-
-
 
     public Calculator(){
         isGoodnessOfFit = false;
@@ -39,18 +37,15 @@ public class Calculator {
         isIndependence = false;
         level = 0.05;
         n = 0;
-        df = 0;
         chiSquare = 0.0;
         pVal = 0.0;
     }
-
 
     /**
      * Method Name: solver
      * Purpose: Lets the user enter information
      * and then this code checks if the conditions are met
      * and then does statistical tests
-     * return void
      **/
     public void solver(Scanner in){
         System.out.println("Welcome to the stats HW solver!");
@@ -102,22 +97,24 @@ public class Calculator {
         } // PROGRAM ENDS HERE
         else if (isHomogeneity) {
             System.out.println("The test for homogeneity can be applied. Now this calculator requires more info");
+            twoVarStats(isLarge, isRandom, in);
         }
         else {
             System.out.println("The test for independence can be applied. Now this calculator requires more info");
+            twoVarStats(isLarge, isRandom, in);
         }
-        twoVarStats(isLarge, isRandom, in);
     }
 
 
     /**
      * Method Name: twoVarStats
-     * Purpose: Lets the user enter boolean values for the
-     * ten percent condition and random variables.
-     * This code will check if the test can be applied for
-     * homogeneity or independence
-     * return void
-     **/
+     * Purpose: Verify whether the homogeneity or independence
+     * test can be applied and then apply the test if it can
+     * @param tenPercentCondition is true if n_i < .10N_i
+     * or n < .10N depending on the problem
+     * @param random is true if randomized
+     * @param in scanner object
+     */
     public void twoVarStats(boolean tenPercentCondition, boolean random, Scanner in) {
         if (!tenPercentCondition || !random) {
             sorryMessage();
@@ -141,14 +138,11 @@ public class Calculator {
                 }
             }
 
-            System.out.println("THERE IS A MISTAKE IMMEDIATELY AFTER THE 2D INPUT");
-            setExpectedValueMatrix2D(); // sets the expected value 2D matrix
-            System.out.println("SET EXPECTED VAL WORKED CORRECTLY");
+            setExpectedValueMatrix2D(row, col); // sets the expected value 2D matrix
 
             if (verifyExpectedCounts2D()) {
 
-                System.out.println("Each value in the expected value is greater than or equal to 5");
-                System.out.println("This means that the expected counts passed");
+                System.out.println("Each value in the expected value is greater than or equal to 5. This means that the expected counts passed.");
                 System.out.println("The 2D array below is the expected counts: ");
                 displayExpectedCounts2D();
 
@@ -171,16 +165,24 @@ public class Calculator {
         }
     }
 
-
+    /**
+     * Method Name: GOFTest
+     * Purpose: Verify whether the GOF test can be applied
+     * and then apply the test if it can
+     * @param tenPercentCondition is true when n < .10N
+     * @param random is true when randomized
+     * @param in is the Scanner object
+     */
     public void GOFTest(boolean tenPercentCondition, boolean random, Scanner in) {
 
         if (!tenPercentCondition || !random) {
             sorryMessage();
         } else { // this means that ten percent condition is met
             System.out.println("The goodness of fit test can be applied. Now this calculator requires more info");
-            System.out.println("How many entries?: ");
+            System.out.print("How many entries?: ");
             int entries = in.nextInt();
-            // ERROR CHECK THIS @THEO
+            in.nextLine();
+
             userMatrix1D = new long[entries];
             expectedValueMatrix1D = new double[entries];
             dist = new double[entries];
@@ -227,11 +229,7 @@ public class Calculator {
     /**
      * Method Name: setExpectedValueMatrix1D
      * Purpose: Sets the expected value matrix
-     * for the 1D array. If all the values are
-     * greater than or equal to 5, then return true.
-     * Else, the conditions have not been met and
-     * return false
-     * return boolean
+     * for the 1D array.
      **/
     public void setExpectedValueMatrix1D() {
         for (int i = 0; i < expectedValueMatrix1D.length; i++) {
@@ -239,40 +237,64 @@ public class Calculator {
         }
     }
 
+    /**
+     * Method Name: verifyExpectedCounts1D
+     * Purpose: If all the values are
+     * greater than or equal to 5, then return true.
+     * Else, the conditions have not been met and return false.
+     * @return if expected counts is met
+     **/
     public boolean verifyExpectedCounts1D() {
-        for (int i = 0; i < expectedValueMatrix1D.length; i++) {
-            if (expectedValueMatrix1D[i] < 5) return false;
+        for (double v : expectedValueMatrix1D) {
+            if (v < 5) return false;
         }
         return true;
     }
 
+    /**
+     * Method Name: displayExpectedCounts1D
+     * Purpose: Displays expected counts array
+     */
     public void displayExpectedCounts1D() {
         for (double v : expectedValueMatrix1D) System.out.print(v + " ");
         System.out.println();
     }
+
+    // 2D methods below
 
     /**
      * Method Name: setExpectedValueMatrix2D
      * Purpose: Sets the expected value matrix
      * for the 2D array
      **/
-    public void setExpectedValueMatrix2D() {
-        for (int r = 0; r < expectedValueMatrix2D.length; r++) {
-            for (int c = 0; c < expectedValueMatrix2D[0].length; c++) {
-                calcIndivVal(r, c);
+    public void setExpectedValueMatrix2D(int row, int col) {
+        for (int r = 0; r < row; r++) {
+            for (int c = 0; c < col; c++) {
+                calcIndividualVal(r, c);
             }
         }
     }
 
+    /**
+     * Method Name: verifyExpectedCounts2D
+     * Purpose: Ensures all values are greater than
+     * ore equal to 5. Returns true if they are, false
+     * if they are not
+     * @return if expected counts is met
+     */
     public boolean verifyExpectedCounts2D() {
-        for (int r = 0; r < expectedValueMatrix2D.length; r++) {
+        for (double[] doubles : expectedValueMatrix2D) {
             for (int c = 0; c < expectedValueMatrix2D[0].length; c++) {
-                if (expectedValueMatrix2D[r][c] < 5) return false;
+                if (doubles[c] < 5) return false;
             }
         }
         return true;
     }
 
+    /**
+     * Method Name: displayExpectedCounts2D
+     * Purpose: Display all values in the 2D array
+     */
     private void displayExpectedCounts2D() {
 
         for (int r = 0; r < expectedValueMatrix2D.length; r++) {
@@ -283,7 +305,6 @@ public class Calculator {
             }
             System.out.println();
         }
-
     }
 
     /**
@@ -292,9 +313,8 @@ public class Calculator {
      */
     public double calcRow(int row) {
         double sum = 0.0;
-        // borked code - you had it as userMatrix2D.length before (wrong)
-        // Row major traversal
-         for (int i = 0; i < userMatrix2D[0].length; i++) {
+        // userMatrix2D[0].length is the length of columns
+        for (int i = 0; i < userMatrix2D[0].length; i++) {
              sum += userMatrix2D[row][i];
         }
         return sum;
@@ -306,10 +326,9 @@ public class Calculator {
      */
     public double calcCol(int col) {
         double sum = 0.0;
-        // Column major traversal
-        // borked code - you had it as userMatrix2D[0].length before (wrong)
-        for (int i = 0; i < userMatrix2D.length; i++) {
-            sum += userMatrix2D[i][col];
+        // userMatrix2D.length is the length of rows
+        for (long[] longs : userMatrix2D) {
+            sum += longs[col];
         }
         return sum;
     }
@@ -320,32 +339,48 @@ public class Calculator {
      * Then takes the row sum and col sum and divides it by the total
      * to get the expected count value.
      */
-    public void calcIndivVal(int row, int col) {
+    public void calcIndividualVal(int row, int col) {
         expectedValueMatrix2D[row][col] = (calcRow(row) * (calcCol(col))/n);
     }
+
+    // END OF MOST IMPORTANT METHODS INVOLVING 1-var stats or 2-var stats
 
     /**
      * Method Name: sorryMessage()
      * Purpose: Outputs sorry when the conditions for
      * the test have not been met
-     * return void
      **/
     public void sorryMessage() {
         System.out.println("I'm sorry, the conditions for this test are not met");
     }
 
+    /**
+     * Method Name: calculateDF
+     * Purpose: Calculate df of 1-var stats
+     * @param categories is the number of categories
+     * @return degrees of freedom
+     */
     public double calculateDF(int categories) {
         return categories - 1;
     }
 
+    /**
+     * Method Name: calculateDF
+     * Purpose: Calculate df of 2-var stats
+     * @param rows is the number of rows
+     * @param cols is the number of columns
+     * @return degrees of freedom
+     */
     public double calculateDF(int rows, int cols) {
         return (rows - 1) * (cols - 1);
     }
 
     /**
      * Method Name: summary()
-     * Purpose: Gives a brief summary of
-     * @return String
+     * Purpose: Gives a brief summary of test results.
+     * The user will still have to contextualize this answer and cannot
+     * use this as their standalone answer
+     * @return String of the summary
      **/
     public String summary() {
 
@@ -374,6 +409,4 @@ public class Calculator {
         }
         return str;
     }
-
-
-}
+} // end of class
