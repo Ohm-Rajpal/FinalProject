@@ -54,7 +54,7 @@ public class Calculator {
      **/
     public void solver(Scanner in){
         System.out.println("Welcome to the stats HW solver!");
-        System.out.println("Does the problem have a 2 dimensional array or no: ");
+        System.out.print("Does the problem have a 2 dimensional array or no: ");
         String check = in.nextLine();
         if (check.toLowerCase().contains("y")) {
             check = "yes";
@@ -64,7 +64,7 @@ public class Calculator {
 
         if (check.equals("yes")) {
             System.out.print("Your problem seems to be either a test for homogeneity or independence");
-            System.out.print("Does your problem have any of the following words? Association, dependence, relationship, etc?");
+            System.out.print("Does your problem have any of the following words? Association, dependence, relationship, etc?: ");
             check = in.nextLine();
             if (check.toLowerCase().contains("y")) {
                 check = "independence";
@@ -88,11 +88,11 @@ public class Calculator {
         System.out.print("Now input the total sample size n: ");
         n = in.nextInt();
         in.nextLine();
-        System.out.print("Is the population large (greater than 10 times the sample size)?");
+        System.out.print("Is the population large greater than 10 times the sample size or for each category if homogeneity?: ");
         String s = in.nextLine();
         boolean isLarge = s.toLowerCase().contains("y");
 
-        System.out.print("Is the sample randomized?");
+        System.out.print("Is the sample randomized?: ");
         String r = in.nextLine();
         boolean isRandom = r.toLowerCase().contains("y");
 
@@ -128,6 +128,7 @@ public class Calculator {
             in.nextLine();
             System.out.print("How many columns in your summary table?: ");
             int col = in.nextInt();
+            in.nextLine();
 
             userMatrix2D = new long[row][col];
             expectedValueMatrix2D = new double[row][col];
@@ -141,17 +142,34 @@ public class Calculator {
                 }
                 in.nextLine();
             }
-            // expected counts not even needed
-            chiSquare = TestUtils.chiSquare(userMatrix2D);
-            pVal = TestUtils.chiSquareTest(userMatrix2D);
 
-            // calculate expected values method
-            // a sum col and row method will be needed
-            // total sum will be needed
+            System.out.println("THERE IS A MISTAKE IMMEDIATELY AFTER THE 2D INPUT");
+            setExpectedValueMatrix2D(); // sets the expected value 2D matrix
+            System.out.println("SET EXPECTED VAL WORKED CORRECTLY");
 
-            System.out.println("The chi-square value is: " + chiSquare);
-            System.out.println("The calculated P-value is: " + pVal);
-            System.out.println(summary());  // solution achieved
+            if (verifyExpectedCounts2D()) {
+
+                System.out.println("Each value in the expected value is greater than or equal to 5");
+                System.out.println("This means that the expected counts passed");
+                System.out.println("The 2D array below is the expected counts: ");
+                displayExpectedCounts2D();
+
+                chiSquare = TestUtils.chiSquare(userMatrix2D);
+                pVal = TestUtils.chiSquareTest(userMatrix2D);
+
+                System.out.println("The chi-square value is: " + chiSquare);
+                System.out.println("The degrees of freedom is: " + calculateDF(row, col));
+                System.out.println("The calculated P-value is: " + pVal);
+                System.out.println(summary());  // solution achieved
+            }
+            else {
+                System.out.println("The expected counts condition was not met.");
+                if (isHomogeneity) {
+                    System.out.println("The test for homogeneity cannot be applied.");
+                } else {
+                    System.out.println("The test for independence cannot be applied.");
+                }
+            }
         }
     }
 
@@ -183,9 +201,9 @@ public class Calculator {
 
             in.nextLine();
 
-            setExpectedValueMatrix1D(entries);
+            setExpectedValueMatrix1D();
 
-            if (verifyExpectedCounts1D(entries)) {
+            if (verifyExpectedCounts1D()) {
                 System.out.println("Each value in the expected value is greater than or equal to 5");
                 System.out.println("This means that the expected counts passed");
                 System.out.println("The 1D array below is the expected counts: ");
@@ -217,14 +235,14 @@ public class Calculator {
      * return false
      * return boolean
      **/
-    public void setExpectedValueMatrix1D(int entries) {
-        for (int i = 0; i < entries; i++) {
+    public void setExpectedValueMatrix1D() {
+        for (int i = 0; i < expectedValueMatrix1D.length; i++) {
             expectedValueMatrix1D[i] = dist[i] * n;
         }
     }
 
-    public boolean verifyExpectedCounts1D(int entries) {
-        for (int i = 0; i < entries; i++) {
+    public boolean verifyExpectedCounts1D() {
+        for (int i = 0; i < expectedValueMatrix1D.length; i++) {
             if (expectedValueMatrix1D[i] < 5) return false;
         }
         return true;
@@ -243,9 +261,31 @@ public class Calculator {
     public void setExpectedValueMatrix2D() {
         for (int r = 0; r < expectedValueMatrix2D.length; r++) {
             for (int c = 0; c < expectedValueMatrix2D[0].length; c++) {
-                calcIndivVal(r, c, calcRow(r), calcCol(c));
+                calcIndivVal(r, c);
             }
         }
+    }
+
+    public boolean verifyExpectedCounts2D() {
+        for (int r = 0; r < expectedValueMatrix2D.length; r++) {
+            for (int c = 0; c < expectedValueMatrix2D[0].length; c++) {
+                if (expectedValueMatrix2D[r][c] < 5) return false;
+            }
+        }
+        return true;
+    }
+
+    private void displayExpectedCounts2D() {
+
+        for (int r = 0; r < expectedValueMatrix2D.length; r++) {
+            int current = r + 1;
+            System.out.print("Row " + current + ": ");
+            for (int c = 0; c < expectedValueMatrix2D[0].length; c++) {
+                System.out.print(expectedValueMatrix2D[r][c] + " ");
+            }
+            System.out.println();
+        }
+
     }
 
     /**
@@ -257,7 +297,7 @@ public class Calculator {
 
         // Row major traversal
         for (int i = 0; i < expectedValueMatrix2D.length; i++) {
-            sum += expectedValueMatrix2D[row][i];
+            sum += userMatrix2D[row][i];
         }
         return sum;
     }
@@ -271,7 +311,7 @@ public class Calculator {
 
         // Column major traversal
         for (int i = 0; i < expectedValueMatrix2D[0].length; i++) {
-            sum += expectedValueMatrix2D[i][col];
+            sum += userMatrix2D[i][col];
         }
         return sum;
     }
@@ -282,42 +322,9 @@ public class Calculator {
      * Then takes the row sum and col sum and divides it by the total
      * to get the expected count value.
      */
-    public void calcIndivVal(int row, int col, double rowSum, double colSum) {
-        expectedValueMatrix2D[row][col] = ((rowSum) * (colSum))/n;
+    public void calcIndivVal(int row, int col) {
+        expectedValueMatrix2D[row][col] = (calcRow(row) * (calcCol(col))/n);
     }
-
-    /*
-    public static double[][] getExpectedValues(double[][] observed_values) {
-        int num_rows = observed_values.length;
-        int num_cols = observed_values[0].length;
-        double[][] expected_values = new double[num_rows][num_cols];
-        double row_total, col_total, grand_total;
-
-
-        grand_total = 0.0;
-        for (int i = 0; i < num_rows; i++) {
-            for (int j = 0; j < num_cols; j++) {
-                grand_total += observed_values[i][j];
-            }
-        }
-
-        for (int i = 0; i < num_rows; i++) {
-            row_total = 0.0;
-            for (int j = 0; j < num_cols; j++) {
-                row_total += observed_values[i][j];
-            }
-            for (int j = 0; j < num_cols; j++) {
-                col_total = 0.0;
-                for (int k = 0; k < num_rows; k++) {
-                    col_total += observed_values[k][j];
-                }
-                expected_values[i][j] = (row_total * col_total) / grand_total;
-            }
-        }
-
-        return expected_values;
-    }
-    */
 
     /**
      * Method Name: sorryMessage()
@@ -361,8 +368,11 @@ public class Calculator {
         else if (isHomogeneity) {
             str += "there is a difference for a categorical variable across several populations.";
         }
-        else {
+        else if (isIndependence){
             str += "the two variables are dependent.";
+        }
+        else {
+            str += "***ERROR***";
         }
         return str;
     }

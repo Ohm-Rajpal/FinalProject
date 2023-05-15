@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0be2118-6ede-46c2-98fa-a1fdf28abf06" name="Changes" comment="Fixed the code for the 1D array expected values.">
+    <list default="true" id="b0be2118-6ede-46c2-98fa-a1fdf28abf06" name="Changes" comment="Finished the code for the expected value matrix 2D. It still needs to be tested. I will have to now clean up the rest of the code, comment more methods, and do some tests.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Calculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Calculator.java" afterDir="false" />
     </list>
@@ -99,7 +99,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684088485978</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Finished the code for the expected value matrix 2D. It still needs to be tested. I will have to now clean up the rest of the code, comment more methods, and do some tests.">
+      <created>1684089451830</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1684089451830</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -117,6 +124,17 @@
     <MESSAGE value="Finished the code for Calculator.java" />
     <MESSAGE value="Updating some mistakes the Calculator.java class. Much more fixes are needed and I still need to fix the expected counts for the 1D and 2D arrays." />
     <MESSAGE value="Fixed the code for the 1D array expected values." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed the code for the 1D array expected values." />
+    <MESSAGE value="Finished the code for the expected value matrix 2D. It still needs to be tested. I will have to now clean up the rest of the code, comment more methods, and do some tests." />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished the code for the expected value matrix 2D. It still needs to be tested. I will have to now clean up the rest of the code, comment more methods, and do some tests." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
