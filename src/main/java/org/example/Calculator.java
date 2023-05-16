@@ -5,7 +5,6 @@ import org.apache.commons.math3.stat.inference.TestUtils;
 
 public class Calculator {
 
-
     /**
      * Identifying which test to use
      */
@@ -409,4 +408,101 @@ public class Calculator {
         }
         return str;
     }
+
+    /**
+     * THESE ARE THE GETTER AND SETTER METHODS USED
+     */
+
+    public boolean isGoodnessOfFit() {
+        return isGoodnessOfFit;
+    }
+
+    public void setGoodnessOfFit(boolean goodnessOfFit) {
+        isGoodnessOfFit = goodnessOfFit;
+    }
+
+    public boolean isHomogeneity() {
+        return isHomogeneity;
+    }
+
+    public void setHomogeneity(boolean homogeneity) {
+        isHomogeneity = homogeneity;
+    }
+
+    public boolean isIndependence() {
+        return isIndependence;
+    }
+
+    public void setIndependence(boolean independence) {
+        isIndependence = independence;
+    }
+
+    public double getLevel() {
+        return level;
+    }
+
+    public double getN() {
+        return n;
+    }
+
+    public void setN(double n) {
+        this.n = n;
+    }
+
+    public double getChiSquare() {
+        return chiSquare;
+    }
+
+    public void setChiSquare(double chiSquare) {
+        this.chiSquare = chiSquare;
+    }
+
+    public double getpVal() {
+        return pVal;
+    }
+
+    public void setpVal(double pVal) {
+        this.pVal = pVal;
+    }
+
+    public long[][] getUserMatrix2D() {
+        return userMatrix2D;
+    }
+
+    public void setUserMatrix2D(long[][] userMatrix2D) {
+        this.userMatrix2D = userMatrix2D;
+    }
+
+    public double[][] getExpectedValueMatrix2D() {
+        return expectedValueMatrix2D;
+    }
+
+    public void setExpectedValueMatrix2D(double[][] expectedValueMatrix2D) {
+        this.expectedValueMatrix2D = expectedValueMatrix2D;
+    }
+
+    public long[] getUserMatrix1D() {
+        return userMatrix1D;
+    }
+
+    public void setUserMatrix1D(long[] userMatrix1D) {
+        this.userMatrix1D = userMatrix1D;
+    }
+
+    public double[] getExpectedValueMatrix1D() {
+        return expectedValueMatrix1D;
+    }
+
+    public void setExpectedValueMatrix1D(double[] expectedValueMatrix1D) {
+        this.expectedValueMatrix1D = expectedValueMatrix1D;
+    }
+
+    public double[] getDist() {
+        return dist;
+    }
+
+    public void setDist(double[] dist) {
+        this.dist = dist;
+    }
+
 } // end of class
