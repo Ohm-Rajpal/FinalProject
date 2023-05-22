@@ -6,6 +6,13 @@ import org.apache.commons.math3.stat.inference.TestUtils;
 public class Calculator {
 
     /**
+     * This value is the max difference a person can have
+     * between their expected values and the true expected
+     * value
+     */
+    private static final double threshold = .01;
+
+    /**
      * Identifying which test to use
      */
     private boolean isGoodnessOfFit;
@@ -19,6 +26,7 @@ public class Calculator {
     private double n; // sample size
     private double chiSquare; // the chi-square test statistic
     private double pVal; // p-value of the chi-square
+    private double df; // df of chi-square
 
     /**
      * These are the array variables
@@ -38,7 +46,137 @@ public class Calculator {
         n = 0;
         chiSquare = 0.0;
         pVal = 0.0;
+        df = 0.0;
     }
+
+    /**
+     * THESE METHODS ARE FOR THE CALCULATOR WHEN IT IS FOR CHATBOT MODE.
+     * THEY WILL USE THE SAME NAME AS THE METHODS BELOW BUT WILL HAVE
+     * DIFFERENT PARAMETERS.
+     *
+     * For these methods, the conditions for 10% and randomness are previously
+     * identified before the method is run. This is not the case for the
+     * non-chatbot methods
+     *
+     * The methods that I am adding include:
+     * - compareExpectedValue(): Compares the expected value of the user
+     *                           with the correct expected value
+     * - twoVarStats(): Calculates the two var stats of the object
+     *                  with slightly less functionality than the
+     *                  2nd method on purpose
+     *
+     * - GOFTest(): Calculate the 1 var stats of the object
+     *              with slightly less functionality than the
+     *              2nd method on purpose
+     *
+     * - promptExpectedValues: Prompt user to enter expected values
+     *
+     */
+
+
+
+    /**
+     * Method Name: GOFTest
+     * Purpose: Does the GOFTest in
+     * the chatbot mode
+     * @param in
+     */
+    public void GOFTest(Scanner in) {
+        // this means that ten percent condition is met
+
+        System.out.print("How many entries?: ");
+        int entries = in.nextInt();
+        in.nextLine();
+
+        userMatrix1D = new long[entries];
+        expectedValueMatrix1D = new double[entries];
+        dist = new double[entries];
+
+        System.out.print("Enter all the values in the array: ");
+        for (int i = 0; i < entries; i++) {
+            userMatrix1D[i] = in.nextInt(); // this initializes the userMatrix1D array
+        }
+
+        in.nextLine();
+
+        System.out.print("Great! Now we need your distribution of categorical variables: ");
+        for (int i = 0; i < entries; i++) {
+            dist[i] = in.nextDouble(); // this initializes the 1D expected values array
+        }
+
+        in.nextLine();
+
+        setExpectedValueMatrix1D();
+    }
+
+    /**
+     * Method Name: twoVarStats
+     * Purpose: Does two-var-stats
+     * in chatbot mode
+     * @param in
+     */
+    public void twoVarStats(Scanner in) {
+
+        System.out.print("How many rows in your summary table?: ");
+        int row = in.nextInt();
+        in.nextLine();
+
+        System.out.print("How many columns in your summary table?: ");
+        int col = in.nextInt();
+        in.nextLine();
+
+        userMatrix2D = new long[row][col];
+        expectedValueMatrix2D = new double[row][col];
+
+        // this gets all the values for the 2D array
+        for (int r = 0; r < row; r++) {
+            System.out.print("Enter all the values in row " + (r + 1) + ": ");
+            for (int c = 0; c < col; c++) {
+                userMatrix2D[r][c] = in.nextInt();
+            }
+            in.nextLine();
+        }
+    }
+
+    /**
+     * Method Name: compareExpectedValues
+     * Purpose: Compares user entered expected values
+     * with the actual expected values
+     * @param userExpected
+     * @return if the expected values match (1D array)
+     */
+    public boolean compareExpectedValues(double[] userExpected) {
+
+        for (int i = 0; i < userExpected.length; i++) {
+            if (Math.abs(userExpected[i] - expectedValueMatrix1D[i]) > threshold) return false;
+        }
+        return true;
+    }
+
+    /**
+     * Method Name: compareExpectedValues
+     * Purpose: Compares user entered expected values
+     * with the actual expected values
+     * @param userExpected
+     * @return if the expected values match (2D array)
+     */
+    public boolean compareExpectedValues(double[][] userExpected) {
+
+        for (int r = 0; r < userExpected.length; r++) {
+            for (int c = 0; c < userExpected[0].length; c++) {
+                if (Math.abs(userExpected[r][c] - expectedValueMatrix2D[r][c]) > threshold) return false;
+            }
+        }
+        return true;
+    }
+
+
+
+
+
+
+    //THE METHODS BELOW ARE FOR THE CALCULATOR WHEN IT IS ON HW SOLVING MODE
+
 
     /**
      * Method Name: solver
@@ -147,9 +285,10 @@ public class Calculator {
 
                 chiSquare = TestUtils.chiSquare(userMatrix2D);
                 pVal = TestUtils.chiSquareTest(userMatrix2D);
+                df = calculateDF(row, col);
 
                 System.out.println("The chi-square value is: " + chiSquare);
-                System.out.println("The degrees of freedom is: " + calculateDF(row, col));
+                System.out.println("The degrees of freedom is: " + df);
                 System.out.println("The calculated P-value is: " + pVal);
                 System.out.println(summary());  // solution achieved
             }
@@ -210,9 +349,10 @@ public class Calculator {
 
                 chiSquare = TestUtils.chiSquare(expectedValueMatrix1D, userMatrix1D);
                 pVal = TestUtils.chiSquareTest(expectedValueMatrix1D, userMatrix1D);
+                df = calculateDF(entries);
 
                 System.out.println("The chi-square value is: " + chiSquare);
-                System.out.println("The degrees of freedom is: " + calculateDF(entries));
+                System.out.println("The degrees of freedom is: " + df);
                 System.out.println("The calculated P-value is: "+ pVal);
                 System.out.println(summary());  // solution achieved
             }
@@ -294,7 +434,7 @@ public class Calculator {
      * Method Name: displayExpectedCounts2D
      * Purpose: Display all values in the 2D array
      */
-    private void displayExpectedCounts2D() {
+    public void displayExpectedCounts2D() {
 
         for (int r = 0; r < expectedValueMatrix2D.length; r++) {
             int current = r + 1;
@@ -504,5 +644,11 @@ public class Calculator {
     public void setDist(double[] dist) {
         this.dist = dist;
     }
+
+
+    public double getDf() { return df; }
+
+    public void setDf(double df) { this.df = df; }
+
 
 } // end of class

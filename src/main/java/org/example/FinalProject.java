@@ -6,7 +6,19 @@ public class FinalProject {
 
         Scanner input = new Scanner(System.in);
         Calculator myCalc = new Calculator();
+        ChatBot bot = new ChatBot();
+        int choice = 0;
 
-        myCalc.solver(input);
+        System.out.println("Welcome to the stats chat bot or HW helper!");
+        System.out.println("1. For chat bot");
+        System.out.println("2. For HW solver");
+
+        choice = input.nextInt();
+        if (choice == 1) {
+            bot.run();
+        }
+        else {
+            myCalc.solver(input);
+        }
     }
 }

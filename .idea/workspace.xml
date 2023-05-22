@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0be2118-6ede-46c2-98fa-a1fdf28abf06" name="Changes" comment="Error checking with nabius G">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/ChatBot.java" afterDir="false" />
+    <list default="true" id="b0be2118-6ede-46c2-98fa-a1fdf28abf06" name="Changes" comment="Updated code with getter and setter methods to help Theo and I with the next step of building a basic chat bot.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Sentiment.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_13_2023_6_53_PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_5_13_2023_6_53_PM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Calculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Calculator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ChatBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ChatBot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/FinalProject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/FinalProject.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,6 +82,7 @@
       <updated>1683851786275</updated>
       <workItem from="1683851787616" duration="2999000" />
       <workItem from="1684000529536" duration="6261000" />
+      <workItem from="1684623022751" duration="13988000" />
     </task>
     <task id="LOCAL-00001" summary="Deleted the file nabius G added">
       <created>1684029375475</created>
@@ -120,7 +126,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684120108633</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Updated code with getter and setter methods to help Theo and I with the next step of building a basic chat bot.">
+      <created>1684203665533</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1684203665533</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -133,6 +146,17 @@
       <options category_option="false" module_option="true" model_option="true" root_option="true" path_option="false" count_option="true" info_option="true" view_searched_nodes_option="true" group_searched_nodes_option="true" autoscroll_option="false" />
     </default_view_options>
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Deleted the file nabius G added" />
     <MESSAGE value="Finished the code for Calculator.java" />
@@ -140,7 +164,8 @@
     <MESSAGE value="Fixed the code for the 1D array expected values." />
     <MESSAGE value="Finished the code for the expected value matrix 2D. It still needs to be tested. I will have to now clean up the rest of the code, comment more methods, and do some tests." />
     <MESSAGE value="Error checking with nabius G" />
-    <option name="LAST_COMMIT_MESSAGE" value="Error checking with nabius G" />
+    <MESSAGE value="Updated code with getter and setter methods to help Theo and I with the next step of building a basic chat bot." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated code with getter and setter methods to help Theo and I with the next step of building a basic chat bot." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
