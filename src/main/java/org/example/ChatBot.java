@@ -1,6 +1,17 @@
 package org.example;
 
-    /**
+/**
+TODAY'S TASK 5/22/23
+
+1. Theo will fix the chatbot run method
+2. Ohm will fix the chatbot array methods
+3. Ohm will also transfer a couple of ChatBot methods to Calculator
+4. Ohm will fix the condition method
+
+*/
+
+
+/**
      * Task for ChatBot:
      * Your job is to simply handle the information entered by the user. The purpose
      * of this bot is to guide the user to the correct answer. The user will be prompted by the bot
@@ -138,53 +149,18 @@ public class ChatBot{
         System.out.flush();
     }
 
-    public void run() {
-        System.out.println("Hello, how can I help you today?");
-        String answer = in.nextLine();
-        answer.toLowerCase();
-        String[] matches = { "math", "stats", "chi-square", "test" };
-        String wantsHelp = prompt("Hello, How can I help you?", "Sorry, I can only help with math", matches);
-    }
-
-    public void greetUser(){
-        System.out.println("Hello, I am Bob. I am the greatest stats calculator ever. How are you doing today?");
-        String input = in.nextLine();
-        String line;
-        String link = "";
-        int senValue = 0;
-        int n = 0;
-
-        try {
-            FileInputStream fis=new FileInputStream("Sentiment.txt");
-            Scanner sc=new Scanner(fis);
-            while(sc.hasNextLine()){
-                try{
-
-                    line = Files.readAllLines(Paths.get("Sentiment.txt")).get(n);
-                    int index = line.indexOf(",");
-                    line = line.substring(0,index);
-                    if(input.contains(line)){
-                        int num = Integer.parseInt(line.substring(index));
-                        senValue+=num;
-
-                    }
-                    n++;
-                }
-                catch(Exception e){
-
-                    sc.close();
-                }
-            }
-        }
-        catch(Exception e){
-
-        }
-
+    public void run(){
+      clearScreen();
+        System.out.println("Hello, I am bob. The GREATEST stats calculator.");
+        String[] matches = { "math", "stats", "chi-square", "test","homework"};
+        String wantsHelp = prompt("How can I help you?", "Sorry, I can only help with math", matches);
+      processQuestion();
     }
 
     public String prompt(String message, String error, String[] keyword) {
         System.out.println(message);
         String input = in.nextLine();
+        input = input.toLowerCase();
         boolean matches = false;
         for (String s : keyword) {
             if (input.contains(s)) {
@@ -204,6 +180,7 @@ public class ChatBot{
     public boolean containWord(String message,String[] keyword) {
         System.out.println(message);
         String input = in.nextLine();
+        input = input.toLowerCase();
         boolean matches = false;
         for (String s : keyword) {
             if (input.contains(s)) {
@@ -229,10 +206,12 @@ public class ChatBot{
     public boolean condition(){
         System.out.print("Is the population large greater than 10 times the sample size or for each category if homogeneity?: ");
         String s = in.nextLine();
+        
         boolean condition = s.toLowerCase().contains("yes");
-
+      
         System.out.print("Is the sample randomized?: ");
         String r = in.nextLine();
+        
         boolean random = r.toLowerCase().contains("yes");
         //if the problems isn't randomized or the 10% condition is not met than it ends the program
         if(condition == false||random == false){
@@ -251,13 +230,13 @@ public class ChatBot{
 
         //asks user if problem includes 2D Array
         System.out.println("Does your problem include a 2D array?");
-        String input = in.next();
-        input.toLowerCase();
+        String input = in.nextLine();
+        input = input.toLowerCase();
 
         if(input.contains("yes")||input.contains("y")){
             int ran = (int) (Math.random()*array.length);
             //if yes then they enter the word problem
-            System.out.println(array[ran] + "please enter your word problem: ");
+            System.out.println(array[ran] + "\nplease enter your word problem: ");
             String input1 = in.nextLine();
             //contain word method is called to check if the inputed text contains the keyword (association, independence, relationship) and return a boolean
             boolean check = containWord(input1, keyword);
@@ -276,7 +255,7 @@ public class ChatBot{
         else if(input.contains("no")||input.contains("n")){
             //if not a 2d array then it sets goodnessoffit to true in Calculator
             calc.setGoodnessOfFit(true);
-            test = "goodness of fit";
+            test = "goodness";
         }
 
         else{
@@ -287,11 +266,13 @@ public class ChatBot{
 
         System.out.println("What type of test do you think this is?");
         String answer = in.nextLine();
-        if(answer.contains(test)){
+        
+        if(answer.toLowerCase().contains(test)){ // the user gets it right
+          
             int ran1 = (int)(Math.random()*correct.length);
             System.out.println(correct[ran1] + " The test is a " +test);
         }
-        else{
+        else{ // user gets it wrong
             int ran2 = (int)(Math.random()*correct.length);
             System.out.println(incorrect[ran2]+" The test is a " + test);
             if(test.equals("independence")){
@@ -374,9 +355,9 @@ public class ChatBot{
         System.out.println("We will now compare your expected values with the bot");
         System.out.print("Enter your expected values: ");
         for (int i = 0; i < calc.getExpectedValueMatrix1D().length; i++) {
-
             userExpectedValue1D[i] = in.nextDouble();
         }
+        System.out.println("Press enter to continue...");
         in.nextLine();
     }
 
@@ -393,6 +374,7 @@ public class ChatBot{
             for (int c = 0; c < calc.getExpectedValueMatrix2D()[0].length; c++) {
                 userExpectedValue2D[r][c] = in.nextDouble();
             }
+            System.out.println("Press enter to continue...");
             in.nextLine();
         }
     }
@@ -411,6 +393,7 @@ public class ChatBot{
         calc.setpVal(TestUtils.chiSquareTest(calc.getUserMatrix2D()));
         calc.setDf(calc.calculateDF(calc.getExpectedValueMatrix2D().length, calc.getExpectedValueMatrix2D()[0].length));
     }
+
     public void promptStatistics() {
 
         double chiSquare = 0.0;
@@ -448,7 +431,7 @@ public class ChatBot{
                 System.out.println("Congrats! You solved the problem!");
             }
             else {
-                System.out.println("Sorry your answer was incorrect");
+                System.out.println("You fool. That is incorrect. This is not a display of mental prowess. ");
             }
             System.out.println("Since P-value > alpha, fail to reject the null hypothesis. We do not have " +
                                "convincing evidence that the alternative hypothesis is true.");
@@ -466,8 +449,6 @@ public class ChatBot{
         }
     }
 
-
-
     public boolean compareStatistics(double chiSquare, double degFree, double pValue) {
         boolean param1 = (Math.abs(chiSquare - calc.getChiSquare()) < .01);
         boolean param2 = (Math.abs(degFree - calc.getDf()) < .01);
@@ -475,5 +456,4 @@ public class ChatBot{
 
         return (param1 && param2 && param3);
     }
-
 }

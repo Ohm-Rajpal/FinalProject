@@ -12,8 +12,11 @@ public class FinalProject {
         System.out.println("Welcome to the stats chat bot or HW helper!");
         System.out.println("1. For chat bot");
         System.out.println("2. For HW solver");
+        System.out.print("Enter selection: ");
 
         choice = input.nextInt();
+        input.nextLine();
+
         if (choice == 1) {
             bot.run();
         }
