@@ -74,6 +74,22 @@ public class Calculator {
      */
 
 
+    // Helper methods from ChatBot that should be in Calculator
+    public void calculateAll1D() {
+        setChiSquare(TestUtils.chiSquare(getExpectedValueMatrix1D(),getUserMatrix1D()));
+        setpVal(TestUtils.chiSquareTest(getExpectedValueMatrix1D(), getUserMatrix1D()));
+        setDf(calculateDF(getExpectedValueMatrix1D().length));
+    }
+
+    public void calculateAll2D() {
+        setChiSquare(TestUtils.chiSquare(getUserMatrix2D()));
+        setpVal(TestUtils.chiSquareTest(getUserMatrix2D()));
+        setDf(calculateDF(getExpectedValueMatrix2D().length, getExpectedValueMatrix2D()[0].length));
+    }
+
+
+
+
 
     /**
      * Method Name: GOFTest
@@ -84,7 +100,7 @@ public class Calculator {
     public void GOFTest(Scanner in) {
         // this means that ten percent condition is met
 
-        System.out.print("How many entries?: ");
+        System.out.print("How many categories?: ");
         int entries = in.nextInt();
         in.nextLine();
 
@@ -317,7 +333,7 @@ public class Calculator {
             sorryMessage();
         } else { // this means that ten percent condition is met
             System.out.println("The goodness of fit test can be applied. Now this calculator requires more info");
-            System.out.print("How many entries?: ");
+            System.out.print("How many categories?: ");
             int entries = in.nextInt();
             in.nextLine();
 

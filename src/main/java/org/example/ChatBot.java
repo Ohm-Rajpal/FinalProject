@@ -145,14 +145,15 @@ public class ChatBot{
     }
 
     public static void clearScreen(){
-        System.out.print("\033[H\033[2J");
+
+
         System.out.flush();
     }
 
     public void run(){
       clearScreen();
-        System.out.println("Hello, I am bob. The GREATEST stats calculator.");
-        String[] matches = { "math", "stats", "chi-square", "test","homework"};
+        System.out.println("Hello, I am Bob. The GREATEST stats calculator.");
+        String[] matches = { "math", "stats", "chi-square", "test", "homework", "statistics" };
         String wantsHelp = prompt("How can I help you?", "Sorry, I can only help with math", matches);
       processQuestion();
     }
@@ -161,6 +162,7 @@ public class ChatBot{
         System.out.println(message);
         String input = in.nextLine();
         input = input.toLowerCase();
+
         boolean matches = false;
         for (String s : keyword) {
             if (input.contains(s)) {
@@ -203,23 +205,6 @@ public class ChatBot{
         }
     }
 
-    public boolean condition(){
-        System.out.print("Is the population large greater than 10 times the sample size or for each category if homogeneity?: ");
-        String s = in.nextLine();
-        
-        boolean condition = s.toLowerCase().contains("yes");
-      
-        System.out.print("Is the sample randomized?: ");
-        String r = in.nextLine();
-        
-        boolean random = r.toLowerCase().contains("yes");
-        //if the problems isn't randomized or the 10% condition is not met than it ends the program
-        if(condition == false||random == false){
-            System.out.println("Cannot solve");
-            return false;
-        }
-        return true;
-    }
     //every method above process question is a helper method for process question
     public void processQuestion(){
 
@@ -238,7 +223,7 @@ public class ChatBot{
             //if yes then they enter the word problem
             System.out.println(array[ran] + "\nplease enter your word problem: ");
             String input1 = in.nextLine();
-            //contain word method is called to check if the inputed text contains the keyword (association, independence, relationship) and return a boolean
+            //contain word method is called to check if the inputted text contains the keyword (association, independence, relationship) and return a boolean
             boolean check = containWord(input1, keyword);
 
             if(check){
@@ -268,30 +253,52 @@ public class ChatBot{
         String answer = in.nextLine();
         
         if(answer.toLowerCase().contains(test)){ // the user gets it right
-          
+
             int ran1 = (int)(Math.random()*correct.length);
-            System.out.println(correct[ran1] + " The test is a " +test);
+            if (test.equals("goodness")) {
+                System.out.println(correct[ran1] + " The test is a goodness of fit test!");
+            }
+            else {
+                System.out.println(correct[ran1] + " The test is a "+test+"!");
+            }
         }
         else{ // user gets it wrong
             int ran2 = (int)(Math.random()*correct.length);
             System.out.println(incorrect[ran2]+" The test is a " + test);
             if(test.equals("independence")){
-                System.out.println("The test is an Independence test because the keyword "+ ntest +" were included in the word problem and it has a 2D array.");
+                System.out.println("The test is an independence test because the keyword "+ ntest +" were included in the word problem and it has a 2D array.");
                 calc.setGoodnessOfFit(true);
             }
             else if(test.equals("homogeneity")){
-                System.out.println("The test is a Homogeneity since it is a 2D array but does not contain any keyword");
+                System.out.println("The test is a test for homogeneity since it is a 2D array but does not contain any keyword");
                 calc.setHomogeneity(true);
             }
             else{
-                System.out.println("The test is a Goodness of Fit test as the problem only has a 1D array");
+                System.out.println("The test is a goodness of fit test as the problem only has a 1D array");
                 calc.setIndependence(true);
             }
         }
 
         // This determines if 10% condition and randomness is true
 
-        conditionsPassed = condition();
+
+        //conditionsPassed = condition();
+
+        // THIS CHECKS THE CONDITIONS:
+        System.out.print("What is your sample size: ");
+        calc.setN(in.nextInt());
+        in.nextLine();
+
+        System.out.print("Is the population large greater than 10 times the sample size or for each category if homogeneity?: ");
+        String s = in.nextLine();
+
+        boolean condition = s.toLowerCase().contains("y");
+
+        System.out.print("Is the sample randomized?: ");
+        String r = in.nextLine();
+
+        boolean random = r.toLowerCase().contains("y");
+        //if the problems isn't randomized or the 10% condition is not met than it ends the program
 
         // if conditions passed, then you can apply the tests
         // else short circuit the program
@@ -300,39 +307,44 @@ public class ChatBot{
 
         // MODIFY THE GOF FUNCTION FOR THE CALC
 
-        if (conditionsPassed) { // this means the two conditions were passed
+        if (condition && random) { // this means the two conditions were passed
 
             if (calc.isGoodnessOfFit()) {
                 calc.GOFTest(in);
                 userExpectedValue1D = new double[calc.getUserMatrix1D().length];
                 promptExpectedValues1D();
 
+                //calc.setExpectedValueMatrix1D();
+                // calculate the expected values
+
                 // this means the expected values entered are the same
                 if (calc.compareExpectedValues(userExpectedValue1D)) {
                     System.out.println(correct[(int)(Math.random()*correct.length)] + " Your 1D expected values are correct!");
-                    calculateAll1D();
                 }
                 else { // incorrect
                     System.out.println(incorrect[(int)(Math.random()*correct.length)]+ " I will display the " +
                             "correct 1D array answer below");
                     calc.displayExpectedCounts1D();
                 }
+                calc.calculateAll1D();
             }
             else {
                 calc.twoVarStats(in);
                 userExpectedValue2D = new double[calc.getUserMatrix2D().length][calc.getUserMatrix2D()[0].length];
                 promptExpectedValues2D();
 
+                // now calculate the expected values
+                calc.setExpectedValueMatrix2D(calc.getUserMatrix2D().length, calc.getUserMatrix2D()[0].length);
+
                 if (calc.compareExpectedValues(userExpectedValue2D)) {
                     System.out.println(correct[(int)(Math.random()*correct.length)] + " Your 2D expected values are correct!");
-                    calculateAll2D();
                 }
-                else { // incorrect
-
+                else { // If the user gets it wrong
                     System.out.println(incorrect[(int)(Math.random()*correct.length)]+ " I will display the " +
                                        "correct 2D array answer below");
                     calc.displayExpectedCounts2D();
                 }
+                calc.calculateAll2D();
             }
             promptStatistics();
         }
@@ -357,7 +369,6 @@ public class ChatBot{
         for (int i = 0; i < calc.getExpectedValueMatrix1D().length; i++) {
             userExpectedValue1D[i] = in.nextDouble();
         }
-        System.out.println("Press enter to continue...");
         in.nextLine();
     }
 
@@ -374,25 +385,10 @@ public class ChatBot{
             for (int c = 0; c < calc.getExpectedValueMatrix2D()[0].length; c++) {
                 userExpectedValue2D[r][c] = in.nextDouble();
             }
-            System.out.println("Press enter to continue...");
             in.nextLine();
         }
     }
 
-
-    // METHOD SHOULD BE IN CALCULATOR
-    public void calculateAll1D() {
-        calc.setChiSquare(TestUtils.chiSquare(calc.getExpectedValueMatrix1D(), calc.getUserMatrix1D()));
-        calc.setpVal(TestUtils.chiSquareTest(calc.getExpectedValueMatrix1D(), calc.getUserMatrix1D()));
-        calc.setDf(calc.calculateDF(userExpectedValue1D.length));
-    }
-
-    // METHOD SHOULD BE IN CALCULATOR
-    public void calculateAll2D() {
-        calc.setChiSquare(TestUtils.chiSquare(calc.getUserMatrix2D()));
-        calc.setpVal(TestUtils.chiSquareTest(calc.getUserMatrix2D()));
-        calc.setDf(calc.calculateDF(calc.getExpectedValueMatrix2D().length, calc.getExpectedValueMatrix2D()[0].length));
-    }
 
     public void promptStatistics() {
 
@@ -421,28 +417,33 @@ public class ChatBot{
             System.out.println("The chi-square value is: " + calc.getChiSquare());
             System.out.println("The degrees of freedom is: " + calc.getDf());
             System.out.println("The calculated P-value is: "+ calc.getpVal());
+            // could be converted into a method
         }
 
-        System.out.println("Do we fail to reject the null hypothesis (y/n): ");
-        String temp = in.nextLine();
+        System.out.println("Select the correct choice: ");
+        System.out.println("We reject the null hypothesis (1)");
+        System.out.println("We fail to reject the null hypothesis (2)");
+        System.out.print("Choice: ");
+        int choice = in.nextInt();
+        in.nextLine();
 
         if (pValue >= .05) { // fail to reject H_a
-            if (temp.toLowerCase().contains("y")) {
+            if (choice == 2) {
                 System.out.println("Congrats! You solved the problem!");
             }
             else {
-                System.out.println("You fool. That is incorrect. This is not a display of mental prowess. ");
+                System.out.println("You fool. That is incorrect. This is not a display of mental prowess.");
             }
             System.out.println("Since P-value > alpha, fail to reject the null hypothesis. We do not have " +
                                "convincing evidence that the alternative hypothesis is true.");
         }
         else
         { // reject H_a
-            if (temp.toLowerCase().contains("n")) {
+            if (choice == 1) {
                 System.out.println("Congrats! You solved the problem!");
             }
             else {
-                System.out.println("Sorry your answer was incorrect");
+                System.out.println("You fool. That is incorrect. This is not a display of mental prowess.");
             }
             System.out.println("Since P-value < alpha, reject the null hypothesis. We have " +
                                "convincing evidence that the alternative hypothesis is true.");
