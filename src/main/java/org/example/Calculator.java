@@ -10,7 +10,7 @@ public class Calculator {
      * between their expected values and the true expected
      * value
      */
-    private static final double threshold = .01;
+    private static final double threshold = .1;
 
     /**
      * Identifying which test to use
@@ -152,6 +152,7 @@ public class Calculator {
             }
             in.nextLine();
         }
+        setExpectedValueMatrix2D(row, col);
     }
 
     /**

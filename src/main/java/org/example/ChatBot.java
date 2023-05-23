@@ -333,9 +333,6 @@ public class ChatBot{
                 userExpectedValue2D = new double[calc.getUserMatrix2D().length][calc.getUserMatrix2D()[0].length];
                 promptExpectedValues2D();
 
-                // now calculate the expected values
-                calc.setExpectedValueMatrix2D(calc.getUserMatrix2D().length, calc.getUserMatrix2D()[0].length);
-
                 if (calc.compareExpectedValues(userExpectedValue2D)) {
                     System.out.println(correct[(int)(Math.random()*correct.length)] + " Your 2D expected values are correct!");
                 }
