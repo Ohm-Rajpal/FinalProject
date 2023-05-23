@@ -105,15 +105,15 @@ TODAY'S TASK 5/22/23
      */
 
 
-import org.apache.commons.math3.stat.inference.TestUtils;
 
-import java.sql.SQLOutput;
+
+
 import java.util.Scanner;
-import java.lang.Math.*;
-import java.util.Random;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
+
+
+
+
 
 /* https://github.com/OhmRajpal/FinalProject/blob/master/src/main/java/org/example/Calculator.java
  */
@@ -121,7 +121,7 @@ public class ChatBot{
 
     Scanner in;
     //some vocab or different sentences for our chatbot so it doesn't say the same thing every time. you can edit the contents of these arrays at any time
-    private String[] words = {"Perfect"};
+   
     private String[] array = {"2D array it is!","Great,","Perfect,"};
     private String[] correct = {"Correct! You are one smart cookie.","That is correct!","You are very smart, that is correct!"};
     private String[] incorrect = {"Incorrect!","That is not right.","I was expecting better from you..."};
@@ -138,26 +138,43 @@ public class ChatBot{
 
     String ntest = "";
 
+  
+
     public ChatBot() {
         clearScreen();
         in = new Scanner(System.in);
         calc = new Calculator();
     }
-
+    
+    /**
+     * Method name: clearScreen
+     * Purpose: Clears the screen
+     */
     public static void clearScreen(){
-
-
+        System.out.print("\033[H\033[2J");  
         System.out.flush();
     }
 
+  /**
+  *Method name: run
+  *Purpose: Starts the chabot
+  */
     public void run(){
       clearScreen();
         System.out.println("Hello, I am Bob. The GREATEST stats calculator.");
         String[] matches = { "math", "stats", "chi-square", "test", "homework", "statistics" };
-        String wantsHelp = prompt("How can I help you?", "Sorry, I can only help with math", matches);
+        prompt("How can I help you?", "Sorry, I can only help with math", matches);
       processQuestion();
     }
-
+  /**
+  *Method name: prompt
+  *Purpose: keeps prompting user until chatbot gets a satisfactory asnwer
+  @param: message
+  @param:error
+  @param: keyword
+  @return: String of user input
+  */
+  
     public String prompt(String message, String error, String[] keyword) {
         System.out.println(message);
         String input = in.nextLine();
@@ -179,7 +196,20 @@ public class ChatBot{
     }
 
 
-    public boolean containWord(String message,String[] keyword) {
+    /**
+     * Fulfills the requirement for searching algorithm 
+    */
+
+    /**
+     * Method name: containWord
+     * Purpose: Prompts the user to a enter a message 
+     * and thens returns true if the keyword is found in there
+     * or if it is not.
+     * @param message
+     * @param keyword
+     * @return boolean. True if contains word, false otherwise
+     */
+    public boolean containWord(String message, String[] keyword) {
         System.out.println(message);
         String input = in.nextLine();
         input = input.toLowerCase();
@@ -206,6 +236,11 @@ public class ChatBot{
     }
 
     //every method above process question is a helper method for process question
+  
+  /**
+  *Method name: processQuestion
+  *Purpose: prompts user for necessary information to help them solve the problem and it helps the user solve the problem
+  */
     public void processQuestion(){
 
         boolean conditionsPassed;
@@ -221,10 +256,9 @@ public class ChatBot{
         if(input.contains("yes")||input.contains("y")){
             int ran = (int) (Math.random()*array.length);
             //if yes then they enter the word problem
-            System.out.println(array[ran] + "\nplease enter your word problem: ");
-            String input1 = in.nextLine();
+            
             //contain word method is called to check if the inputted text contains the keyword (association, independence, relationship) and return a boolean
-            boolean check = containWord(input1, keyword);
+            boolean check = containWord(array[ran] +"\nplease enter your word problem:" , keyword);
 
             if(check){
                 //if the text does contain the keyword then independence is set to true
@@ -351,7 +385,7 @@ public class ChatBot{
 
 
 
-    } // end of process method
+    } // end of processQuestion method
 
 
     //@OHM add Calculations here
@@ -386,7 +420,13 @@ public class ChatBot{
         }
     }
 
-
+    /**
+     * Method name: promptStatistics
+     * Purpose: Prompts the user to enter chi-square value, df, and P-value
+     * and then compares with the ccorrect values. Then asks the user about the 
+     * conclusion and tells the user if their solution is correct
+     **/
+  
     public void promptStatistics() {
 
         double chiSquare = 0.0;
@@ -447,6 +487,15 @@ public class ChatBot{
         }
     }
 
+    /**
+     * Method name: compareStatistics
+     * Purpose: Compares the statistics the user enters with the correct
+     * statistics. 
+     * @param chiSquare
+     * @param degFree
+     * @param pValue
+     * @return boolean. True if equal, false otherwise
+     */
     public boolean compareStatistics(double chiSquare, double degFree, double pValue) {
         boolean param1 = (Math.abs(chiSquare - calc.getChiSquare()) < .01);
         boolean param2 = (Math.abs(degFree - calc.getDf()) < .01);
