@@ -144,6 +144,7 @@ public class ChatBot{
         clearScreen();
         in = new Scanner(System.in);
         calc = new Calculator();
+        //
     }
     
     /**
