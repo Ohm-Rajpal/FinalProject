@@ -378,7 +378,19 @@ public class ChatBot{
                 }
                 calc.calculateAll2D();
             }
-            promptStatistics();
+            // Verify if the expected counts pass
+            if (calc.isGoodnessOfFit() && calc.verifyExpectedCounts1D()) {
+                System.out.println("Since all the values are above 5, you may proceed to the next step.");
+                promptStatistics(); // Calculates the values
+            }
+            else if ((calc.isIndependence() || calc.isHomogeneity()) && calc.verifyExpectedCounts2D()) {
+                System.out.println("Since all the values are above 5, you may proceed to the next step.");
+                promptStatistics(); // Calculates the values
+            }
+            else {
+                System.out.println("Since not all the values were greater than or equal to 5, this test cannot be " +
+                        "done");
+            }
         }
         else { // The program cannot go on after this point. This is the ending spot of the code
             calc.sorryMessage();
@@ -451,6 +463,7 @@ public class ChatBot{
             System.out.println(correct[(int) (Math.random() * correct.length)] + " Now we only have one question left");
         }
         else {
+            pValue = calc.getpVal();
             System.out.println("That is incorrect. The correct values are: ");
             System.out.println("The chi-square value is: " + calc.getChiSquare());
             System.out.println("The degrees of freedom is: " + calc.getDf());
@@ -470,7 +483,7 @@ public class ChatBot{
                 System.out.println("Congrats! You solved the problem!");
             }
             else {
-                System.out.println("You fool. That is incorrect. This is not a display of mental prowess.");
+                System.out.println("Sorry, that is incorrect. This is not a display of mental prowess.");
             }
             System.out.println("Since P-value > alpha, fail to reject the null hypothesis. We do not have " +
                                "convincing evidence that the alternative hypothesis is true.");
