@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0be2118-6ede-46c2-98fa-a1fdf28abf06" name="Changes" comment="Fixed major bugs. Should hopefully run smoothly. Now preparing presentation." />
+    <list default="true" id="b0be2118-6ede-46c2-98fa-a1fdf28abf06" name="Changes" comment="Reverted Arnab's commit. Was causing some issues" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,7 +76,7 @@
       <workItem from="1684000529536" duration="6261000" />
       <workItem from="1684623022751" duration="23081000" />
       <workItem from="1685410124668" duration="238000" />
-      <workItem from="1685410588010" duration="2567000" />
+      <workItem from="1685410588010" duration="2871000" />
     </task>
     <task id="LOCAL-00001" summary="Deleted the file nabius G added">
       <created>1684029375475</created>
@@ -155,7 +155,21 @@
       <option name="project" value="LOCAL" />
       <updated>1685412705892</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Revert &quot;Remove condescending messages&quot;&#10;&#10;This reverts commit 3475827b">
+      <created>1685413248714</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1685413248714</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Reverted Arnab's commit. Was causing some issues">
+      <created>1685413341702</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1685413341702</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,7 +205,9 @@
     <MESSAGE value="Massive fixes for the 1D calculations. Now I will fix the 2D array calculations." />
     <MESSAGE value="Fixed bugs for 2D array calculations. There is only a mistake in the containsWord(input1, input2) method. We will have to troubleshoot that soon. Now we have extra time to add some more functionality, clean the code, and ensure most of the edge cases are met" />
     <MESSAGE value="Fixed major bugs. Should hopefully run smoothly. Now preparing presentation." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed major bugs. Should hopefully run smoothly. Now preparing presentation." />
+    <MESSAGE value="Revert &quot;Remove condescending messages&quot;&#10;&#10;This reverts commit 3475827b" />
+    <MESSAGE value="Reverted Arnab's commit. Was causing some issues" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reverted Arnab's commit. Was causing some issues" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
