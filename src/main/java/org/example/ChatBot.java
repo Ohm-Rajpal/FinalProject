@@ -470,7 +470,7 @@ public class ChatBot{
                 System.out.println("Congrats! You solved the problem!");
             }
             else {
-                System.out.println("You fool. That is incorrect. This is not a display of mental prowess.");
+                System.out.println("That is incorrect. ");
             }
             System.out.println("Since P-value > alpha, fail to reject the null hypothesis. We do not have " +
                                "convincing evidence that the alternative hypothesis is true.");
@@ -481,7 +481,7 @@ public class ChatBot{
                 System.out.println("Congrats! You solved the problem!");
             }
             else {
-                System.out.println("You fool. That is incorrect. This is not a display of mental prowess.");
+                System.out.println("That is incorrect. ");
             }
             System.out.println("Since P-value < alpha, reject the null hypothesis. We have " +
                                "convincing evidence that the alternative hypothesis is true.");
